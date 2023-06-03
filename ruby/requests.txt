@@ -1,0 +1,6 @@
+curl -X GET http://localhost:9292/articles --user "applicant:pass"
+curl -X GET http://localhost:9292/articles/3 --user "applicant:pass"
+curl -X GET http://localhost:9292/articles/10 --user "applicant:pass"
+curl -X POST http://localhost:9292/articles/ --user "applicant:pass" --header "Content-Type: application/json" --data '{"title":"TEST","content":"hallo"}'
+curl -X PUT http://localhost:9292/articles/4 --user "applicant:pass" --header "Content-Type: application/json" --data '{"title":"TEST2","content":"hallo2"}'
+curl -X DELETE http://localhost:9292/articles/4 --user "applicant:pass"
