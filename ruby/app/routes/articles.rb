@@ -26,7 +26,7 @@ class ArticleRoutes < Sinatra::Base
     summary = @articleCtrl.get_article params[:id]
 
     if summary[:ok]
-      { article: summary[:data] }.to_json
+      { article: summary[:data], comments: summary[:comments] }.to_json
     else
       { msg: summary[:msg] }.to_json
     end
@@ -34,7 +34,7 @@ class ArticleRoutes < Sinatra::Base
 
   post('/') do
     payload = JSON.parse(request.body.read)
-    puts payload
+
     summary = @articleCtrl.create_article(payload)
 
     if summary[:ok]
@@ -42,6 +42,14 @@ class ArticleRoutes < Sinatra::Base
     else
       { msg: summary[:msg] }.to_json
     end
+  end
+
+  post('/:id') do
+    payload = JSON.parse(request.body.read)
+    
+    summary = @articleCtrl.create_comment(params[:id], payload)
+    
+    { msg: summary[:msg] }.to_json
   end
 
   put('/:id') do

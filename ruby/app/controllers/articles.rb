@@ -34,13 +34,29 @@ class ArticleController
     if res.empty?
       { ok: false, msg: 'Article not found' }
     else
-      { ok: true, data: res.first }
+      comments = Comment.where(:article_id => id)
+      { ok: true, data: res.first, comments: comments }
     end
   rescue StandardError
     { ok: false }
   end
+  
+  def create_comment(id, comment)
+    res = Article.where(:id => id)
+
+    if res.empty?
+      { ok: false, msg: 'Article not found' }
+    else
+      new_comment = Comment.new(:article_id => id, :content => comment['content'], :author_name => comment['author_name'], :created_at => Time.now)
+      new_comment.save
+      { ok: true, msg: 'Article commented' }
+    end
+  rescue StandardError => e
+    { ok: false, msg: e.message }
+  end
 
   def delete_article(id)
+    Comment.delete_by(article_id: id)
     delete_count = Article.delete(id)
 
     if delete_count == 0
